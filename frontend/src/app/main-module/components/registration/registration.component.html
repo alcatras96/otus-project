@@ -1,0 +1,143 @@
+<ngx-spinner type="ball-scale-multiple"></ngx-spinner>
+
+<app-header></app-header>
+
+<div class="container">
+
+    <div class="row justify-content-center">
+        <h4 class="mb-3">New User Registration</h4>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-6" #collapseName="bs-collapse"
+             [collapse]="isOpen">
+            <label>First name</label>
+            <form [formGroup]="customersForm">
+                <input class="form-control" formControlName="firstName" placeholder="Alan" minlength="6" maxlength="20"
+                       [(ngModel)]="newCustomer.name" pattern="^[A-z]+$" [required]="currentRegisterOption == 'Customer'"></form>
+            <div class="alert alert-danger"
+                 *ngIf="customersForm.controls['firstName'].invalid && customersForm.controls['firstName'].touched && customersForm.controls['firstName'].dirty">
+                Incorrect name.
+            </div>
+        </div>
+        <div class="col-6" #collapseOrgName="bs-collapse" [collapse]="!isOpen">
+            <label>Organization name</label>
+            <form [formGroup]="ownersForm">
+                <input class="form-control" formControlName="orgName" placeholder="Microsoft" minlength="6"
+                       maxlength="20" pattern="^[A-z]+$"
+                       [(ngModel)]="newOwner.name" [required]="currentRegisterOption == 'Owner'">
+            </form>
+            <div class="alert alert-danger"
+                 *ngIf="ownersForm.controls['orgName'].invalid && ownersForm.controls['orgName'].touched && ownersForm.controls['orgName'].dirty">
+                Incorrect organization name.
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-6">
+            <label>Login</label>
+            <form [formGroup]="usersForm">
+                <input class="form-control" formControlName="login" placeholder="Login" maxlength="20"
+                       [(ngModel)]="newUser.login"
+                       minlength="6" pattern="^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]+$">
+            </form>
+            <div class="alert alert-danger"
+                 *ngIf="usersForm.controls['login'].invalid && usersForm.controls['login'].touched && usersForm.controls['login'].dirty">
+                Incorrect login.
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-6">
+            <div class="row">
+                <div class="col-12">
+                    <label>Email</label>
+                </div>
+                <div class="col-1 pr-0"><span class="input-group-text">@</span></div>
+                <div class="col-11 pl-0">
+                    <form [formGroup]="usersForm">
+                        <input class="form-control" formControlName="email" placeholder="you@example.com" minlength="6"
+                               maxlength="25"
+                               [(ngModel)]="newUser.email" email>
+                    </form>
+                    <div class="alert alert-danger"
+                         *ngIf="usersForm.controls['email'].invalid && usersForm.controls['email'].touched && usersForm.controls['email'].dirty">
+                        Incorrect email.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <form [formGroup]="passwordForm">
+        <div class="row justify-content-center">
+            <div class="col-6">
+                <label>Password</label>
+                <div style="position: relative">
+                    <div style="position: absolute; margin-left: 92%"><a class="btn btn-link" (click)="showPassword()"><i
+                            class="fa fa-eye"></i></a></div>
+                    <input [type]="password" class="form-control" formControlName="password" [(ngModel)]="newUser.password"
+                           pattern="^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]+$"
+                           minlength="6" maxlength="20" placeholder="123456789a">
+                    <div class="alert alert-danger"
+                         *ngIf="passwordForm.controls['password'].dirty && passwordForm.controls['password'].touched && passwordForm.controls['password'].invalid">
+                        Bad password.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-6">
+                <label>Confirm password</label>
+                <div style="position: relative">
+                    <div style="position: absolute; margin-left: 92%"><a class="btn btn-link" (click)="showConfirmPassword()"><i
+                            class="fa fa-eye"></i></a></div>
+                    <input [type]="confirmPassword" id="confirm" class="form-control" formControlName="confirmPassword"
+                           minlength="6" maxlength="20" placeholder="123456789a">
+                </div>
+                <div class="alert alert-danger"
+                     *ngIf="passwordForm.controls['confirmPassword'].dirty && passwordForm.invalid && passwordForm.controls['confirmPassword'].touched">
+                    Passwords do not match.
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="row justify-content-center">
+        <div class="col-6" #collapseAddr="bs-collapse" [collapse]="isOpen">
+            <label>Address</label>
+            <form [formGroup]="customersForm">
+                <input class="form-control" formControlName="address" placeholder="1234 Main st." minlength="6" maxlength="25"
+                       [(ngModel)]="newCustomer.address" [required]="currentRegisterOption == 'Customer'"
+                       pattern="^[a-zA-Z0-9_]+( [a-zA-Z0-9_]+)*$"></form>
+            <div class="alert alert-danger"
+                 *ngIf="customersForm.controls['address'].dirty && customersForm.controls['address'].invalid && customersForm.controls['address'].touched">
+                Invalid address.
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-6 mt-0">
+            <hr>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-2">
+            <div class="btn-group">
+                <label class="btn btn-primary"
+                       (click)="collapseAddr.show(); collapseName.show(); collapseOrgName.hide(); currentRegisterOption = 'Customer'">Customer</label>
+                <label class="btn btn-primary"
+                       (click)="collapseAddr.hide(); collapseName.hide(); collapseOrgName.show(); currentRegisterOption = 'Owner'">Owner</label>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-primary" type="button" [disabled]="_isRegisterButtonDisabled(currentRegisterOption)"
+                    (click)="currentRegisterOption == 'Owner' ? _addOwner() : _addCustomer();">
+                Register
+            </button>
+        </div>
+    </div>
+
+</div>
+
